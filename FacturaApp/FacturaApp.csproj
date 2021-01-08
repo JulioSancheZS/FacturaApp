@@ -126,7 +126,11 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CategoriaController.cs" />
+    <Compile Include="Controllers\ClienteController.cs" />
+    <Compile Include="Controllers\FacturaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProductoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -138,10 +142,25 @@
     <Compile Include="Migrations\202012191657224_CreacionDb01.designer.cs">
       <DependentUpon>202012191657224_CreacionDb01.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202012210327436_MasTablas.cs" />
+    <Compile Include="Migrations\202012210327436_MasTablas.designer.cs">
+      <DependentUpon>202012210327436_MasTablas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012281915318_AddAtributoDetalle.cs" />
+    <Compile Include="Migrations\202012281915318_AddAtributoDetalle.designer.cs">
+      <DependentUpon>202012281915318_AddAtributoDetalle.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Categorias.cs" />
+    <Compile Include="Models\Cliente.cs" />
+    <Compile Include="Models\DetalleFactura.cs" />
+    <Compile Include="Models\Factura.cs" />
     <Compile Include="Models\FacturaAppBdContext.cs" />
     <Compile Include="Models\Productos.cs" />
+    <Compile Include="Models\ViewModel\CategoriaViewModel.cs" />
+    <Compile Include="Models\ViewModel\ClienteViewModel.cs" />
+    <Compile Include="Models\ViewModel\FacturaViewModel.cs" />
+    <Compile Include="Models\ViewModel\ProductoViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +189,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <Content Include="Views\Factura\Index.cshtml" />
+    <Content Include="Views\Factura\Registrar.cshtml" />
+    <Content Include="Views\Categoria\Index.cshtml" />
+    <Content Include="Views\Categoria\New.cshtml" />
+    <Content Include="Views\Categoria\Edit.cshtml" />
+    <Content Include="Views\Cliente\Index.cshtml" />
+    <Content Include="Views\Cliente\New.cshtml" />
+    <Content Include="Views\Cliente\Edit.cshtml" />
+    <Content Include="Views\Producto\Index.cshtml" />
+    <Content Include="Views\Producto\New.cshtml" />
+    <Content Include="Views\Producto\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -180,6 +210,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012191657224_CreacionDb01.resx">
       <DependentUpon>202012191657224_CreacionDb01.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012210327436_MasTablas.resx">
+      <DependentUpon>202012210327436_MasTablas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012281915318_AddAtributoDetalle.resx">
+      <DependentUpon>202012281915318_AddAtributoDetalle.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

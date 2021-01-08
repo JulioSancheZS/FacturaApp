@@ -1,0 +1,79 @@
+﻿@using FacturaApp.Models.ViewModel
+@model List<ProductoViewModel>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2 class="is-size-3 ml-4">Cliente</h2>
+
+<a class="button is-primary ml-4 mb-4" href="@Url.Content("~/Producto/New")">Nuevo Producto</a>
+
+<table class="table is-fullwidth">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Categoria</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th>@item.ID</th>
+                <td>@item.Nombre</td>
+                <td>@item.Descripcion</td>
+                <td>@item.PrecioVenta</td>
+                <td>@item.NombreCategoria</td>
+                <td>
+                    <button class="button is-success"
+                            onclick="document.location.href='@Url.Content("~/Producto/Edit/?Id=" + item.ID)'">
+                        Editar
+                    </button>
+                    <button class="button is-danger"
+                            onclick="eliminarPro(@item.ID)">
+                        Eliminar
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+
+
+    //Eliminar
+    let URLDELETE = "@Url.Content("~/Producto/Detele")";
+
+    let eliminarPro = (id) => {
+
+        fetch(URLDELETE, {
+            method: "POST",
+            body: JSON.stringify({
+
+                ID: id
+
+            }),
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
+        }).then((resp) => {
+            if (resp.ok)
+                resp.text();
+            else
+                alert("Error al ejecutar :(");
+        }).then((data) => {
+
+               document.location.href = "@Url.Content("~/Producto/")";
+
+        }).catch(error => {
+            console.log(error);
+        })
+
+    }
+
+</script>

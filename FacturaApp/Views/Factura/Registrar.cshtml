@@ -1,0 +1,308 @@
+﻿@using FacturaApp.Models.ViewModel
+@model FacturaViewModel
+@{
+    ViewBag.Title = "Facturar";
+}
+
+<br />
+<h2 class="is-size-4">Nueva Factura</h2>
+<br />
+
+@using (Html.BeginForm("Registrar", "Factura", FormMethod.Post, new { id = "form" }))
+{
+    <div class="box">
+
+
+        <div class="columns">
+            <div class="column">
+                @Html.ValidationSummary(true, "", new { @class = "has-text-danger" })
+                <div class="field">
+                    <label class="label">Cliente</label>
+                    <div class="control">
+                        <div class="select">
+                            @Html.DropDownListFor(d => d.ClienteId, ViewBag.ClienteLista as SelectList, "Seleccionar", new { id = "txtCliente" })
+                            @Html.ValidationMessageFor(d => d.ClienteId, "", new { @class = "has-text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+
+                <div class="field">
+                    <label class="label">Producto</label>
+                    <div class="control">
+                        <div class="select">
+                            <select id="productoDropdown" name="productoDropdown">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+
+            .field  p{
+                visibility: hidden
+            }
+
+            .field.help small {
+                color: #e74c3c;
+                visibility: visible;
+            }
+
+
+        </style>
+
+        <input class="input" type="hidden" id="id" placeholder="ID Producto" hidden>
+
+
+        <div class="field">
+            <label class="label">Producto</label>
+            <div class="control">
+                <input class="input" type="text" id="nombre" placeholder="Nombre Producto" disabled>
+
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Precio</label>
+            <div class="control">
+                <input class="input" type="text" id="precio" placeholder="Precio Producto" disabled>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Cantidad</label>
+            <div class="control">
+                <input class="input" type="text" id="cantidad" placeholder="Cantidad">
+
+                <p >This email is invalid</p>
+
+            </div>
+        </div>
+
+        <br />
+        <!--  Agregar detalles-->
+        <input value="Agregar a la tabla"
+               type="button"
+               class="button is-link is-outlined"
+               id="btnAgregar"
+               onclick="AgregarConcepto();" return false;" />
+
+    </div>
+
+    <div id="divConceptos" class="table-container">
+        <table id="tablaConcepto" class="table is-fullwidth">
+            <tr>
+                <th>Cantidad</th>
+                <th>Producto</th>
+                <th>PrecioUnitario</th>
+                <th>Total</th>
+            </tr>
+
+        </table>
+    </div>
+
+    <div class="field">
+        <input type="submit"
+               value="Generar Venta"
+               class="button is-primary" />
+    </div>
+}
+
+<script>
+
+  
+
+    const ListaProductos = () => {
+        //Dropdown Producto
+        let productoDropdown = document.getElementById("productoDropdown");
+        productoDropdown.length  = 0;
+        let texto = document.createElement('option');
+        texto.text = "Seleccionar";
+        productoDropdown.add(texto);
+        productoDropdown.selectedIndex = 0;
+
+
+    //Input para agregar detalles
+        let id = document.getElementById("id");
+        let nombre = document.getElementById("nombre");
+        let precio = document.getElementById("precio");
+
+        const url = "@Url.Content("~/Factura/BuscarProducto")";
+
+
+    fetch(url)
+        .then(
+            function (response) {
+                if (response.status !== 200) {
+                    console.warn('Hay un problema ' +
+                        response.status);
+                    return;
+                }
+
+                response.json().then(function (data) {
+                    let option;
+
+                    for (let i = 0; i < data.length; i++) {
+                        option = document.createElement('option');
+                        option.text = data[i].Nombre;
+                        option.value = data[i].ProductoId;
+                        option.title = data[i].PrecioVenta;
+                        productoDropdown.add(option);
+
+                        //console.log(productoDropdown.value)
+                        //id.value = data[i].ProductoId;
+                        //nombre.value = data[i].Nombre
+                        //precio.value = data[i].PrecioVenta
+
+                        //productoDropdown.addEventListener('change', () => {
+                        //    id.value = data[i].ProductoId
+
+                        //})
+                    }
+                });
+            }
+        )
+        .catch(function (err) {
+            console.error('Fetch Error -', err);
+        });
+
+    //Busqueda del value Producto del DropDownList
+    productoDropdown.addEventListener('change', () => {
+
+        var opt = productoDropdown.options[productoDropdown.selectedIndex];
+
+        id.value = opt.value;
+        nombre.value = opt.text;
+        precio.value = opt.title;
+        //console.log(opt.value);
+        //console.log(opt.text);
+        console.log("\n\n CHANGE, FUNCIONANDO \n\n")
+
+       })
+    }
+
+    ListaProductos();
+
+    let num = 0; //Numero de indice que vamos
+    //Agregar Factura
+    const AgregarConcepto = () => {
+
+        let id = document.getElementById("id").value;
+        let nombre = document.getElementById("nombre").value;
+        let precio = document.getElementById("precio").value;
+        let cantidad = document.getElementById("cantidad").value;
+
+
+        //Validación Sencilla
+        if (productoDropdown.value === "Seleccionar") {
+            alert("Elija el producto");
+        }else
+        if (cantidad==="") {
+            alert("ingresa la cantidad")
+        } else {
+
+        console.log("Se a agregado al detalle: " + id)
+        console.log("Se a agregado al detalle: " + nombre)
+        console.log("Se a agregado al detalle: " + precio)
+
+        let tablaConceptos = document.getElementById("tablaConcepto");
+
+        //Creando Elementos html
+        let tr = document.createElement("tr");
+        let tdCantidad = document.createElement("td");
+        let tdProducto = document.createElement("td");
+        let tdPrecio = document.createElement("td");
+        let tdTotal = document.createElement("td");
+
+        tr.appendChild(tdCantidad);
+        tr.appendChild(tdProducto);
+        tr.appendChild(tdPrecio);
+        tr.appendChild(tdTotal);
+
+        tdCantidad.innerHTML = cantidad;
+        tdProducto.innerHTML = nombre;
+        tdPrecio.innerHTML = precio;
+        tdTotal.innerHTML = parseFloat(cantidad) * parseFloat(precio);
+        tablaConceptos.appendChild(tr);
+
+        //Creando los hidden
+        let divConceptos = document.getElementById("divConceptos");
+        let HiddenIndex = document.createElement("input");
+        let HiddenCantidad = document.createElement("input");
+        let HiddenProducto = document.createElement("input");
+        let HiddenPrecio = document.createElement("input");
+
+        HiddenIndex.name = "DetalleFacturaViewModels.Index";
+        HiddenIndex.value = num;
+        HiddenIndex.type = "hidden";
+
+        HiddenCantidad.name = "DetalleFacturaViewModels[" + num + "].Cantidad";
+        HiddenCantidad.value = cantidad;
+        HiddenCantidad.type = "hidden";
+
+        HiddenProducto.name = "DetalleFacturaViewModels[" + num + "].ProductoId";
+        HiddenProducto.value = id;
+        HiddenProducto.type = "hidden";
+
+        HiddenPrecio.name = "DetalleFacturaViewModels[" + num + "].Precio";
+        HiddenPrecio.value = precio;
+        HiddenPrecio.type = "hidden";
+
+        //le agregamos los elementos Hidden en el divConceptos
+        divConceptos.appendChild(HiddenIndex);
+        divConceptos.appendChild(HiddenCantidad);
+        divConceptos.appendChild(HiddenProducto);
+        divConceptos.appendChild(HiddenPrecio);
+
+        //Limpiamos los text para seguir agregando detalle a la factura
+        document.getElementById("cantidad").value = "";
+        document.getElementById("id").value = "";
+        document.getElementById("precio").value = "";
+        nombre = document.getElementById("nombre").value = "";
+
+        num++;//aumenta los hidden
+        }
+       
+    }
+
+
+
+    const id = document.getElementById("id")
+    const nombre = document.getElementById("nombre")
+    const precio = document.getElementById("precio")
+    const cantidad = document.getElementById("cantidad")
+    const form = document.getElementById("form");
+
+    
+    const ValidarInput = () => {
+
+        const idValue = id.value.trim();
+        const nombreValue = nombre.value.trim();
+        const preciodValue = precio.value.trim();
+        const cantidadValue = cantidad.value.trim();
+
+        if (cantidadValue === "") {
+            setErrorFor(cantidad, "Ingrese la cantidad")
+        }
+
+       function setErrorFor(input,message) {
+            const formControl = input.parentElement; //.form-control//
+            // const small = formControl.querySelector('small');
+            const small = formControl.querySelector('p');
+
+            //add error messate inside small
+            small.innerText = message;
+
+            //add error class
+            //.form-control のクラス名を変更している
+           formControl.className = 'help is-danger';
+     }
+
+    }
+
+    
+</script>

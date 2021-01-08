@@ -6,17 +6,17 @@ using System.Web;
 
 namespace FacturaApp.Models
 {
-    public class Productos
+    public class Clientes
     {
         [Key]
-        public int ProductoId { get; set; }
+        public int ClienteId { get; set; }
         [Required(ErrorMessage ="Campo Requerido")]
         public string Nombre { get; set; }
-        public string Descripcion { get; set; }
         [Required(ErrorMessage = "Campo Requerido")]
-        public decimal PrecioVenta { get; set; }
-        public int CategoriaId { get; set; }
-
-        public List<DetalleFactura> DetalleFacturas { get; set; }
+        public string Apellido { get; set; }
+        public string Edad { get; set; }
+        public string Direccion { get; set; }
+        public string Telefono { get; set; }
+        public List<Factura> Facturas { get; set; }
     }
 }

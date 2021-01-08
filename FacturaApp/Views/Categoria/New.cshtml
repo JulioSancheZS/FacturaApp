@@ -1,0 +1,71 @@
+﻿@using FacturaApp.Models.ViewModel
+@model CategoriaViewModel 
+@{
+    ViewBag.Title = "New";
+}
+
+
+<h1 class="is-size-3 mt-2 ml-3">Nuevo Registro</h1>
+<div class="box">
+    <div class="columns">
+        <div class="column is-two-fifths">
+            <section class="section">
+                <div class="container">
+                    @using (Html.BeginForm(new { id = "formCategoria" }))
+                    {
+                        @Html.ValidationSummary(true, "", new { @class = "has-text-danger" })
+                        <div class="field">
+                            @Html.LabelFor(d => d.Descripcion, new { @class = "label" })
+                            <div class="control">
+                                @Html.TextBoxFor(d => d.Descripcion, new { @class = "input", placeholder = "Nombre Categoria", id = "txtDescripcion" })
+
+                            </div>
+                            @Html.ValidationMessageFor(d => d.Descripcion, "", new { @class = "has-text-danger" })
+                        </div>
+                        <button class="button is-primary mt-4" type="submit">Guardar</button>         
+                    }
+                    </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    let txtDescripcion = document.getElementById("txtDescripcion");
+    let formCategoria = document.getElementById("formCategoria");
+
+    const URLPost = "@Url.Content("~/Categoria/Save")"
+
+    const agregarCategoria = () => {
+
+        fetch(URLPost, {
+            method: "POST",
+            body: JSON.stringify({
+                Descripcion: txtDescripcion.value
+            }),
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
+        }).then((resp) => {
+            if (resp.ok)
+                resp.text();
+            else {
+
+                alert("Algo anda mal")
+            }
+        }).then((data) => {
+            document.location.href = "@Url.Content("~/Categoria")"
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
+    formCategoria.addEventListener("submit", (e) => {
+        e.preventDefault();
+        agregarCategoria();
+        //document.location.href = "@Url.Content("~/Categoria")"
+    });
+
+</script>

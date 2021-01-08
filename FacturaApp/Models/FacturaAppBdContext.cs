@@ -14,7 +14,10 @@ namespace FacturaApp.Models
                 (new CreateDatabaseIfNotExists<FacturaAppBdContext>());
         }
 
-        public DbSet<Categorias> Categorias {get; set;}
+        public DbSet<Categorias> Categorias { get; set; }
         public DbSet<Productos> Productos { get; set; }
+        public DbSet<Clientes> Clientes { get; set; }
+        public DbSet<Factura> Facturas { get; set; }
+        public DbSet<DetalleFactura> DetalleFacturas { get; set; }
     }
 }

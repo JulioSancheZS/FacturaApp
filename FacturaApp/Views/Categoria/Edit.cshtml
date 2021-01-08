@@ -1,0 +1,76 @@
+﻿@using FacturaApp.Models.ViewModel
+@model CategoriaViewModel
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2 class="is-size-3 mt-2 ml-3">Actualizar Registro</h2>
+<div class="box">
+    <div class="columns">
+        <div class="column is-two-fifths">
+            <section class="section">
+                <div class="container">
+                    <form id="formCategoria">
+                        @Html.HiddenFor(d => d.ID, new { id="txtIdCategoria" })
+                        <div class="field">
+                            @Html.LabelFor(d => d.Descripcion, new { @class = "label" })
+                            <div class="control">
+                                @Html.TextBoxFor(d => d.Descripcion, new { @class = "input", placeholder = "Nombre Categoria", id = "txtDescripcion" })
+                            </div>
+                        </div>
+                        <button class="button is-primary mt-4" type="submit">Actualizar</button>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    let txtDescripcion = document.getElementById("txtDescripcion");
+    let txtId = document.getElementById("txtIdCategoria");
+    let formCategoria = document.getElementById("formCategoria");
+
+    let URLPUT = "@Url.Content("~/Categoria/Update")";
+
+    //Peticion Post
+    let editarCategoria = () => {
+
+        fetch(URLPUT, {
+            method: "POST",
+            body: JSON.stringify({
+
+                Descripcion: txtDescripcion.value,
+                ID: txtId.value
+
+            }),
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
+        }).then((resp) => {
+            if (resp.ok)
+                resp.text();
+            else
+                alert("Error al ejecutar :(");
+        }).then((data) => {
+            //if (data != "1") {
+            //    //alert(data)
+            //}
+            //else {
+               document.location.href = "@Url.Content("~/Categoria/")";
+            //}
+
+        }).catch(error => {
+            console.log(error);
+        })
+
+    }
+
+    formCategoria.addEventListener("submit", (e) => {
+        e.preventDefault();
+        editarCategoria();
+    });
+
+</script>

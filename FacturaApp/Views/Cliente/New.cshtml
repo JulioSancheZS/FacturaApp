@@ -1,0 +1,102 @@
+﻿@using FacturaApp.Models.ViewModel
+@model ClienteViewModel
+@{
+    ViewBag.Title = "New";
+}
+
+
+<h1 class="is-size-3 mt-2 ml-3">Nuevo Registro</h1>
+<div class="box">
+    <div class="columns">
+        <div class="column is-two-fifths">
+            <section class="section">
+                <div class="container">
+                    <form id="formCliente">
+                        <div class="field">
+                            @Html.LabelFor(d => d.Nombre, new { @class = "label" })
+                            <div class="control">
+                                @Html.TextBoxFor(d => d.Nombre, new { @class = "input", placeholder = "Julio", id = "txtNombre" })
+                            </div>
+                        </div>
+                        <div class="field">
+                            @Html.LabelFor(d => d.Apellido, new { @class = "label" })
+                            <div class="control">
+                                @Html.TextBoxFor(d => d.Apellido, new { @class = "input", placeholder = "Sánchez", id = "txtApellido" })
+                            </div>
+                        </div>
+                        <div class="field">
+                            @Html.LabelFor(d => d.Edad, new { @class = "label" })
+                            <div class="control">
+                                @Html.TextBoxFor(d => d.Edad, new { @class = "input", placeholder = "25", id = "txtEdad" })
+                            </div>
+                        </div>
+                        <div class="field">
+                            @Html.LabelFor(d => d.Direccion, new { @class = "label" })
+                            <div class="control">
+                                @Html.TextBoxFor(d => d.Direccion, new
+                                {
+                                    @class = "input",
+                                    placeholder = "Irithyll del Valle Boreal, dos Escaleras al Norte, Por Anor London ",
+                                    id = "txtDireccion"
+                                })
+                            </div>
+                        </div>
+                        <div class="field">
+                            @Html.LabelFor(d => d.Telefono, new { @class = "label" })
+                            <div class="control">
+                                @Html.TextBoxFor(d => d.Telefono, new { @class = "input", placeholder = "8888-9999", id = "txtTelefono" })
+                            </div>
+                        </div>
+                        <button class="button is-primary mt-4" type="submit">Guardar</button>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    let txtNombre = document.getElementById("txtNombre");
+    let txtApellido = document.getElementById("txtApellido");
+    let txtEdad = document.getElementById("txtEdad");
+    let txtDireccion = document.getElementById("txtDireccion");
+    let txtTelefono = document.getElementById("txtTelefono");
+    let formCliente = document.getElementById("formCliente");
+
+    const URLPost = "@Url.Content("~/Cliente/Save")"
+
+    const agregarCliente = () => {
+
+        fetch(URLPost, {
+            method: "POST",
+            body: JSON.stringify({
+                Nombre: txtNombre.value,
+                Apellido: txtApellido.value,
+                Edad: txtEdad.value,
+                Direccion: txtDireccion.value,
+                Telefono: txtTelefono.value
+            }),
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
+        }).then((resp) => {
+            if (resp.ok)
+                resp.text();
+            else
+                alert("Algo anda mal")
+        }).then((data) => {
+            document.location.href = "@Url.Content("~/Cliente")"
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
+    formCliente.addEventListener("submit", (e) => {
+        e.preventDefault();
+        agregarCliente();
+        
+    });
+
+</script>
