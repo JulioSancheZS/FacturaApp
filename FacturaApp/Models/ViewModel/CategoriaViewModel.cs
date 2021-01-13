@@ -9,7 +9,7 @@ namespace FacturaApp.Models.ViewModel
     public class CategoriaViewModel
     {
         public int ID { get; set; }
-        [Required(ErrorMessage ="Este campo no puede quedar vacio")]
+        [Required(ErrorMessage = "Este campo es requerido.")]
         public string Descripcion { get; set; }
     }
 }

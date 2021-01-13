@@ -41,7 +41,7 @@ namespace FacturaApp.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return View();
+                    return View(model);
                 }
                 using(FacturaAppBdContext db = new FacturaAppBdContext())
                 {

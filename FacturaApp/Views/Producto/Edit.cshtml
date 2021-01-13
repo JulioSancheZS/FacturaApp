@@ -1,7 +1,7 @@
 ﻿@using FacturaApp.Models.ViewModel
 @model ProductoViewModel
 @{
-    ViewBag.Title = "New";
+    ViewBag.Title = "Edit";
     List<SelectListItem> items = (List<SelectListItem>)ViewBag.items;
 }
 
@@ -56,9 +56,9 @@
     let txtIdProducto = document.getElementById("txtIdProducto");
     let formProducto = document.getElementById("formProducto");
 
-    const URLPost = "@Url.Content("~/Producto/Save")"
+    const URLPost = "@Url.Content("~/Producto/Update")"
 
-    const agregarProducto = () => {
+    const editarProducto = () => {
 
         fetch(URLPost, {
             method: "POST",
@@ -87,7 +87,7 @@
 
     formProducto.addEventListener("submit", (e) => {
         e.preventDefault();
-        agregarProducto();
+        editarProducto();
 
     });
 

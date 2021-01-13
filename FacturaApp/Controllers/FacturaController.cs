@@ -14,13 +14,24 @@ namespace FacturaApp.Controllers
 
         public ActionResult Index()
         {
+            List<ClienteDetalleViewModel> lst = new List<ClienteDetalleViewModel>();
 
-
-            /*List<Productos> ListaProductos = db.Productos.ToList();
-            ViewBag.ProductosLista = new SelectList(ListaProductos, "ProductoId", "Nombre", "PrecioVenta");
-            */
-            return View();
+            using (FacturaAppBdContext db = new FacturaAppBdContext())
+            {
+                lst = (from d in db.Facturas
+                       join c in db.Clientes on d.ClienteId equals c.ClienteId
+                       join f in db.DetalleFacturas on d.FacturaId equals f.FacturaId
+                       select new ClienteDetalleViewModel
+                       {
+                           IDFactura = d.FacturaId,
+                           Cliente = c.Nombre + " " + c.Apellido,
+                           Fecha = d.Fecha,
+                           Total = f.Total
+                       }).ToList();
+              }
+            return View(lst);
         }
+
         [HttpGet]
         public ActionResult Registrar()
         {
@@ -57,7 +68,7 @@ namespace FacturaApp.Controllers
                 {
                     ClienteId = x.ClienteId,
                     NombreCompleto = x.Nombre + " " + x.Apellido
-                   
+
                 }).ToList(), JsonRequestBehavior.AllowGet);
             }
         }
@@ -71,7 +82,7 @@ namespace FacturaApp.Controllers
             }
             try
             {
-               
+
                 using (FacturaAppBdContext db = new FacturaAppBdContext())
                 {
                     Factura oFactura = new Factura();
@@ -99,10 +110,18 @@ namespace FacturaApp.Controllers
                 return View(model);
                 throw;
             }
-
-           
         }
 
-       
+
+        public ActionResult DetelleCliente(int id)
+        {
+            
+            using( FacturaAppBdContext db = new FacturaAppBdContext())
+            {
+               
+            }
+         
+            return View();
+        }
     }
 }

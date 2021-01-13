@@ -158,6 +158,7 @@
     <Compile Include="Models\FacturaAppBdContext.cs" />
     <Compile Include="Models\Productos.cs" />
     <Compile Include="Models\ViewModel\CategoriaViewModel.cs" />
+    <Compile Include="Models\ViewModel\ClienteDetalleViewModel.cs" />
     <Compile Include="Models\ViewModel\ClienteViewModel.cs" />
     <Compile Include="Models\ViewModel\FacturaViewModel.cs" />
     <Compile Include="Models\ViewModel\ProductoViewModel.cs" />

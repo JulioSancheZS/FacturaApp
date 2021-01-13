@@ -1,5 +1,5 @@
 ﻿@using FacturaApp.Models.ViewModel
-@model CategoriaViewModel 
+@model CategoriaViewModel
 @{
     ViewBag.Title = "New";
 }
@@ -11,20 +11,19 @@
         <div class="column is-two-fifths">
             <section class="section">
                 <div class="container">
-                    @using (Html.BeginForm(new { id = "formCategoria" }))
-                    {
+                    <form id="formCategoria">
                         @Html.ValidationSummary(true, "", new { @class = "has-text-danger" })
                         <div class="field">
                             @Html.LabelFor(d => d.Descripcion, new { @class = "label" })
                             <div class="control">
                                 @Html.TextBoxFor(d => d.Descripcion, new { @class = "input", placeholder = "Nombre Categoria", id = "txtDescripcion" })
-
                             </div>
-                            @Html.ValidationMessageFor(d => d.Descripcion, "", new { @class = "has-text-danger" })
+
+                            <p id="myDIV"></p>
                         </div>
-                        <button class="button is-primary mt-4" type="submit">Guardar</button>         
-                    }
-                    </div>
+                        <button class="button is-primary mt-4" type="submit">Guardar</button>
+                    </form>
+                </div>
             </section>
         </div>
     </div>
@@ -39,7 +38,14 @@
 
     const agregarCategoria = () => {
 
-        fetch(URLPost, {
+        if (txtDescripcion.value === '') {
+            console.log("Campo vacio");
+            var element = document.getElementById("myDIV");
+            element.innerHTML ="Este campo es requerido"
+            element.classList.toggle("has-text-danger");
+        } else {
+
+            fetch(URLPost, {
             method: "POST",
             body: JSON.stringify({
                 Descripcion: txtDescripcion.value
@@ -48,24 +54,25 @@
                 "Accept": "application/json",
                 "Content-Type": "application/json"
             }
-        }).then((resp) => {
+             }).then((resp) => {
             if (resp.ok)
                 resp.text();
             else {
-
-                alert("Algo anda mal")
+                // alert("Algo anda mal");
+                console.log('algo anda mal')
             }
-        }).then((data) => {
-            document.location.href = "@Url.Content("~/Categoria")"
-        }).catch((error) => {
-            console.log(error)
-        })
+            }).then((data) => {
+                document.location.href = "@Url.Content("~/Categoria")"
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
+
     }
 
     formCategoria.addEventListener("submit", (e) => {
         e.preventDefault();
         agregarCategoria();
-        //document.location.href = "@Url.Content("~/Categoria")"
     });
 
 </script>

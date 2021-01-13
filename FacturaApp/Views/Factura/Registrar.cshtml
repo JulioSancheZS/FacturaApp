@@ -11,24 +11,48 @@
 @using (Html.BeginForm("Registrar", "Factura", FormMethod.Post, new { id = "form" }))
 {
     <div class="box">
-
-
         <div class="columns">
             <div class="column">
-                @Html.ValidationSummary(true, "", new { @class = "has-text-danger" })
+                <style>      
+                    /*Estilos para el autocompletado*/
+                    .suggestions > div {
+                        padding: 10px;
+                        font-size: 15px;
+                        background: #808080;
+                        color: #fff;
+                        border-top: 1px solid #666;
+                        cursor: pointer;
+                    }
+
+                    .suggestions > div:hover {
+                        background-color: #1e4dd4;
+                    }
+
+                    .emphy {
+                        width: 50%;
+                        margin: 40px auto;
+                        text-align: center;
+                        color: #fff;
+                    }
+
+                </style>
+
                 <div class="field">
-                    <label class="label">Cliente</label>
+                    <label class="label">Buscar Cliente</label>
                     <div class="control">
-                        <div class="select">
-                            @Html.DropDownListFor(d => d.ClienteId, ViewBag.ClienteLista as SelectList, "Seleccionar", new { id = "txtCliente" })
-                            @Html.ValidationMessageFor(d => d.ClienteId, "", new { @class = "has-text-danger" })
+                        <input 
+                               class="input is-primary search-input" 
+                               type="text" 
+                               placeholder="Escribe para buscar">
+                        <div class="suggestions">
+                            <!--Aqui se pinta-->
                         </div>
                     </div>
                 </div>
+                @Html.HiddenFor(d => d.ClienteId, new { id= "idCliente" })
             </div>
 
             <div class="column">
-
                 <div class="field">
                     <label class="label">Producto</label>
                     <div class="control">
@@ -40,20 +64,6 @@
                 </div>
             </div>
         </div>
-
-        <style>
-
-            .field  p{
-                visibility: hidden
-            }
-
-            .field.help small {
-                color: #e74c3c;
-                visibility: visible;
-            }
-
-
-        </style>
 
         <input class="input" type="hidden" id="id" placeholder="ID Producto" hidden>
 
@@ -77,9 +87,6 @@
             <label class="label">Cantidad</label>
             <div class="control">
                 <input class="input" type="text" id="cantidad" placeholder="Cantidad">
-
-                <p >This email is invalid</p>
-
             </div>
         </div>
 
@@ -110,14 +117,66 @@
                value="Generar Venta"
                class="button is-primary" />
     </div>
+   
 }
 
 <script>
+     
+    //Autocompletado Funcional (mas o menos)
+    const searchInput = document.querySelector('.search-input');
+    const suggestionsPanel = document.querySelector('.suggestions');
+    let idCliente = document.getElementById('idCliente');
 
-  
+    traer = async () => {
 
+         const URLGETCLIENTE = "@Url.Content("~/Factura/BuscarCliente")"
+
+        const res = await fetch(URLGETCLIENTE);
+        const clientes = await res.json();
+
+        searchInput.addEventListener('keyup', function () {
+            const input = searchInput.value;
+            suggestionsPanel.innerHTML = '';
+            const suggestions = clientes.filter(function (cliente) {
+                //return country.name.toLowerCase().startsWith(input);
+                const regex = new RegExp(`^${input}`, 'gi');
+                //filtrar el valor de la matriz y los caracteres del usuario a minúsculas y devolver solo aquellas palabras que comienzan con caracteres ingresados ​​por el usuario
+                // return data.toLocaleLowerCase().startsWith(userData.toLocaleLowerCase());
+                // console.log(data);
+                return cliente.NombreCompleto.match(regex);
+            });
+            //Recoremos el arreglo
+            suggestions.forEach(function (suggested) {
+                // const contenedor = document.createElement('div')
+                const div = document.createElement('div');
+
+                div.innerHTML = suggested.NombreCompleto;
+
+                suggestionsPanel.appendChild(div);
+                //Le decimos que cuando le de click al item del div, que lo ponga en el input
+                //y luego removemos el div (aun no funciona como quiero)
+                div.addEventListener('click', () => {
+                    console.log(suggested.abbr);
+                    idCliente.value = suggested.ClienteId;
+                    searchInput.value = suggested.NombreCompleto;
+                    suggestionsPanel.removeChild(div);
+                });
+
+            });
+            if (input === '') {
+                suggestionsPanel.innerHTML = '';
+            }
+        })
+    }
+
+    //Fin del autoCompletado
+    traer(); //llamamos la funcion
+
+    //----------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------
+    //Dropdown Producto
     const ListaProductos = () => {
-        //Dropdown Producto
+       
         let productoDropdown = document.getElementById("productoDropdown");
         productoDropdown.length  = 0;
         let texto = document.createElement('option');
@@ -152,16 +211,6 @@
                         option.value = data[i].ProductoId;
                         option.title = data[i].PrecioVenta;
                         productoDropdown.add(option);
-
-                        //console.log(productoDropdown.value)
-                        //id.value = data[i].ProductoId;
-                        //nombre.value = data[i].Nombre
-                        //precio.value = data[i].PrecioVenta
-
-                        //productoDropdown.addEventListener('change', () => {
-                        //    id.value = data[i].ProductoId
-
-                        //})
                     }
                 });
             }
@@ -187,6 +236,10 @@
 
     ListaProductos();
 
+    //----------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------
+
+    //Funcionalidad para hacer la factura
     let num = 0; //Numero de indice que vamos
     //Agregar Factura
     const AgregarConcepto = () => {
@@ -196,12 +249,11 @@
         let precio = document.getElementById("precio").value;
         let cantidad = document.getElementById("cantidad").value;
 
-
         //Validación Sencilla
         if (productoDropdown.value === "Seleccionar") {
             alert("Elija el producto");
         }else
-        if (cantidad==="") {
+        if (cantidad === "") {
             alert("ingresa la cantidad")
         } else {
 
@@ -266,18 +318,30 @@
 
         num++;//aumenta los hidden
         }
-       
+
     }
 
 
+    //----------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------
 
+    //Validaciones, aun en proceso
     const id = document.getElementById("id")
     const nombre = document.getElementById("nombre")
     const precio = document.getElementById("precio")
     const cantidad = document.getElementById("cantidad")
     const form = document.getElementById("form");
 
-    
+    form.addEventListener('submit', (e) => {
+       
+
+        if (texto.value === '') {
+            alert("fucionando")
+            e.preventDefault();
+            
+        }
+    })
+
     const ValidarInput = () => {
 
         const idValue = id.value.trim();
@@ -304,5 +368,5 @@
 
     }
 
-    
+
 </script>

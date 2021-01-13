@@ -1,4 +1,5 @@
-﻿
+﻿@using FacturaApp.Models.ViewModel
+@model List<ClienteDetalleViewModel>
 @{
     ViewBag.Title = "Index";
 }
@@ -7,3 +8,24 @@
 
 @Html.ActionLink("Nueva Venta", "Registrar", "Factura")
 
+<table class="table is-bordered">
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Total</th>
+            <th>Creado</th>
+        </tr>
+    </thead>
+    <tbody>
+      @foreach (var item in Model)
+      {
+        <tr>
+            <th>@Html.ActionLink(item.Cliente, "detalle", new { id = item.IDFactura })</th>
+            <td>@item.Total</td>
+            <td>@item.Fecha.ToString("dd-MM-yyyy")</td>
+        </tr>
+
+      }
+        
+    </tbody>
+</table>
