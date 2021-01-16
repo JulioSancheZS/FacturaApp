@@ -6,7 +6,7 @@
 
 <h2>Index</h2>
 
-@Html.ActionLink("Nueva Venta", "Registrar", "Factura")
+@Html.ActionLink("Nueva Venta", "Registrar", "Factura", new { @class="button is-primary"})
 
 <table class="table is-bordered">
     <thead>
@@ -20,7 +20,7 @@
       @foreach (var item in Model)
       {
         <tr>
-            <th>@Html.ActionLink(item.Cliente, "detalle", new { id = item.IDFactura })</th>
+            <th>@Html.ActionLink(item.Cliente, "DetalleCliente", new { id = item.IDFactura })</th>
             <td>@item.Total</td>
             <td>@item.Fecha.ToString("dd-MM-yyyy")</td>
         </tr>

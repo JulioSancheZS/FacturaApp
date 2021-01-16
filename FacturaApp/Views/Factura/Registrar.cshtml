@@ -121,7 +121,6 @@
 }
 
 <script>
-     
     //Autocompletado Funcional (mas o menos)
     const searchInput = document.querySelector('.search-input');
     const suggestionsPanel = document.querySelector('.suggestions');
@@ -129,7 +128,7 @@
 
     traer = async () => {
 
-         const URLGETCLIENTE = "@Url.Content("~/Factura/BuscarCliente")"
+        const URLGETCLIENTE = "@Url.Content("~/Factura/BuscarCliente")"
 
         const res = await fetch(URLGETCLIENTE);
         const clientes = await res.json();
@@ -184,8 +183,7 @@
         productoDropdown.add(texto);
         productoDropdown.selectedIndex = 0;
 
-
-    //Input para agregar detalles
+       //Input para agregar detalles
         let id = document.getElementById("id");
         let nombre = document.getElementById("nombre");
         let precio = document.getElementById("precio");
@@ -241,7 +239,7 @@
 
     //Funcionalidad para hacer la factura
     let num = 0; //Numero de indice que vamos
-    //Agregar Factura
+    //Agregar detalle
     const AgregarConcepto = () => {
 
         let id = document.getElementById("id").value;
@@ -321,52 +319,27 @@
 
     }
 
-
     //----------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------
 
     //Validaciones, aun en proceso
-    const id = document.getElementById("id")
-    const nombre = document.getElementById("nombre")
-    const precio = document.getElementById("precio")
-    const cantidad = document.getElementById("cantidad")
-    const form = document.getElementById("form");
+    const Validaciones = () => {
+        const id = document.getElementById("id")
+        const nombre = document.getElementById("nombre")
+        const precio = document.getElementById("precio")
+        const cantidad = document.getElementById("cantidad")
+        const form = document.getElementById("form");
 
-    form.addEventListener('submit', (e) => {
-       
-
-        if (texto.value === '') {
-            alert("fucionando")
-            e.preventDefault();
-            
-        }
-    })
-
-    const ValidarInput = () => {
-
-        const idValue = id.value.trim();
-        const nombreValue = nombre.value.trim();
-        const preciodValue = precio.value.trim();
-        const cantidadValue = cantidad.value.trim();
-
-        if (cantidadValue === "") {
-            setErrorFor(cantidad, "Ingrese la cantidad")
-        }
-
-       function setErrorFor(input,message) {
-            const formControl = input.parentElement; //.form-control//
-            // const small = formControl.querySelector('small');
-            const small = formControl.querySelector('p');
-
-            //add error messate inside small
-            small.innerText = message;
-
-            //add error class
-            //.form-control のクラス名を変更している
-           formControl.className = 'help is-danger';
-     }
-
+        form.addEventListener('submit', (e) => {
+            if (idCliente.value === '') {
+                alert("Error, los campos estan vacios")
+                e.preventDefault();
+            } else {
+                //e.stopPropagation();
+                setTimeout(() => console.log("voy a la otra pagina"), 3000);
+            }
+        })
     }
 
-
+    Validaciones();
 </script>

@@ -20,28 +20,22 @@ namespace FacturaApp.Controllers
             {
                 lst = (from d in db.Facturas
                        join c in db.Clientes on d.ClienteId equals c.ClienteId
-                       join f in db.DetalleFacturas on d.FacturaId equals f.FacturaId
+                      
                        select new ClienteDetalleViewModel
                        {
                            IDFactura = d.FacturaId,
                            Cliente = c.Nombre + " " + c.Apellido,
                            Fecha = d.Fecha,
-                           Total = f.Total
                        }).ToList();
-              }
+            }
             return View(lst);
         }
 
         [HttpGet]
         public ActionResult Registrar()
         {
-            using (FacturaAppBdContext db = new FacturaAppBdContext())
-            {
-                List<Clientes> ListaCliente = db.Clientes.ToList();
-                ViewBag.ClienteLista = new SelectList(ListaCliente, "ClienteId", "Nombre");
+            return View();
 
-                return View();
-            }
         }
 
         [HttpGet]
@@ -113,14 +107,35 @@ namespace FacturaApp.Controllers
         }
 
 
-        public ActionResult DetelleCliente(int id)
+        //[HttpGet]
+        //public ActionResult DetalleCliente(int id)
+        //{
+        //    List<ClienteDetalleViewModel> lst = new List<ClienteDetalleViewModel>();
+
+        //    using (FacturaAppBdContext db = new FacturaAppBdContext())
+        //    {
+        //        lst = (from d in db.Facturas
+        //               join c in db.Clientes on d.ClienteId equals c.ClienteId
+        //               join f in db.DetalleFacturas on d.FacturaId equals f.FacturaId
+        //               where d.ClienteId == id
+
+        //               select new ClienteDetalleViewModel 
+        //               {
+        //                   IDFactura = d.FacturaId,
+        //                   Cliente = c.Nombre + " " + c.Apellido,
+        //                   Fecha = d.Fecha,
+        //               }).ToList();
+        //    }
+
+
+        //    return View(lst);
+        //}
+        [HttpGet]
+        public ActionResult DetalleCliente()
         {
-            
-            using( FacturaAppBdContext db = new FacturaAppBdContext())
-            {
-               
-            }
-         
+           
+
+
             return View();
         }
     }
