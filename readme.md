@@ -20,6 +20,7 @@
 - Detalle cliente
 - Eliminar detalle en tiempo real
 - Loader la hacer la venta
+- Reportes
 - ...
 
 ### Esta aplicación no esta completa porque me falta hacer funcionalidades y mejorar el diseño.
