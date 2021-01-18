@@ -3,7 +3,8 @@
 ### Tecnologías usadas
 - C#, ASP.NET MVC
 - Sql server
-- Entity Framework con enfoque Code First
+- Entity Framework 
+- Code First
 - Linq
 - HTML, CSS, Bulma Framework
 - Vanilla Javascript
@@ -15,15 +16,6 @@
 - Autocompletador 
 - ...
 
-### Futuras funcionalidades
-- Paginación
-- Detalle cliente
-- Eliminar detalle en tiempo real
-- Loader la hacer la venta
-- Reportes
-- ...
-
-### Esta aplicación no esta completa porque me falta hacer funcionalidades y mejorar el diseño.
 
 ##
 ##
