@@ -14,6 +14,8 @@
 - Maestro detalle Venta
 - Crud de tablas independientes y dependientes
 - Autocompletador 
+- Busqueda de Productos
+- Busqueda de Clientes
 - ...
 
 
